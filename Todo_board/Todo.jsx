@@ -13,7 +13,12 @@ const Todo = () => {
       setTask('');
     }
   };
+const remove=(index)=>{
+    const updatedlist = [...taskList];
+    updatedlist.splice(index,1);
+    setTaskList(updatedlist);
 
+}
   return (
     <div>
       <h1>Todo</h1>
@@ -29,8 +34,12 @@ const Todo = () => {
 
       <ul>
         {taskList.map((task, index) => (
+            <>
           <li key={index}>{task}</li>
+          <button onClick={()=>remove(index)}>Remove</button>
+          </>
         ))}
+       
       </ul>
     </div>
   );
