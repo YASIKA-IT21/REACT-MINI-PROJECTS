@@ -1,0 +1,87 @@
+INDEX .JS
+import React from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.js"
+import { store } from "./store.js"
+
+const root = createRoot(document.getElementById("app"));
+
+// Store State Change Listener
+const render = () => {
+  root.render(<App
+  state = {store.getState()}
+  dispatch={store.dispatch}
+  />);
+}
+store.subscribe(render);
+render();
+
+// Subscribe to state changes
+
+INDEX.HTML
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <main id="app"/>
+	<script src="https://content.codecademy.com/courses/React/react-18-course-bundle.min.js"></script>
+  <script src="index.compiled.js"></script>
+</body>
+</html>
+
+STORE.JS
+import { createStore } from 'redux';
+
+// Action Creators
+export function increment() { 
+  return {type: 'increment'}
+}
+
+export function decrement() { 
+  return {type: 'decrement'}
+}
+
+// Reducer / Store
+const initialState = 0;
+const countReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'increment':
+      return state + 1; 
+    case 'decrement':
+      return state - 1; 
+    default:
+      return state;
+  }
+};  
+export const store = createStore(countReducer);
+
+
+APP.JS
+import React from "react";
+import { increment, decrement } from "./store";
+
+function App({ state, dispatch}) {
+  // Dispatch increment action
+  const incrementerClicked = () => {
+      dispatch(increment());
+  };
+  // Dispatch decrement action
+  const decrementerClicked = () => {
+dispatch(decrement());
+  };
+
+  return(
+    <main>
+      <p id='counter'>{state}</p>
+      <button id='incrementer' onClick={incrementerClicked}>+</button>
+      <button id='decrementer' onClick={decrementerClicked}>-</button>
+    </main>
+  )
+}
+
+export default App;
